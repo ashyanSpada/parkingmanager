@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script>
+	var a={a:5};
+	b=a.prototype;
+	b=Object.prototype;
+	console.log(Object.getPrototypeOf(a));
+	function person(name){
+		this.name=name;
+	}
+	person.prototype.say=function(){
+		console.log(this.name);
+	}
+	var d=new person('j');
+	console.log(Object.prototype);
+</script>
+<body>
+	
+</body>
+</html>
