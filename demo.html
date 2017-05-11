@@ -201,22 +201,226 @@
 		}
 		return re.join('  ');
 	}
+	//两个有序序列的排序
 	function twoArraySort(arr1,arr2){
-		var len1=arr1.length;
-		var len2=arr2.length;
-		var arr=arr1.concat(arr2);
-		for(var i=len1,len=arr.length;i<len;i++){
-			var k=arr[i];
-			var j=i-1;
-			while(k<arr[j]&&j>=0){
-				arr[j+1]=arr[j];
-				j--;
+		var i=0,j=0;
+		var len1=arr1.length,len2=arr2.length;
+		var arr=[];
+		while(i<len1&&j<len2){
+			if(arr1[i]<arr2[j]){
+				arr.push(arr1[i]);
+				i++;
+			}else if(arr1[i]>=arr2[j]){
+				arr.push(arr2[j]);
+				j++;
 			}
-			arr[j+1]=k;
+		}
+		while(i==len1&&j<len2){
+			arr.push(arr2[j]);
+			j++;
+		}
+		while(j==len2&&i<len1){
+			console.log(i);
+			arr.push(arr1[i]);
+			i++;
 		}
 		return arr;
 	}
-	console.log(twoArraySort([1,3,5,7,9],[2,4,6,8,10]));
+	
+	//两个有序序列的排序方法2
+	function twoArraySort2(arr1,arr2){
+		var arr=[];
+		while(arr1.length>0&&arr2.length>0){
+			if(arr1[0]>=arr2[0]){
+				arr.push(arr2[0]);
+				arr2.shift();
+			}else if(arr1[0]<arr2[0]){
+				arr.push(arr1[0]);
+				arr1.shift();
+			}
+		}
+		while(arr1.length==0&&arr2.length>0){
+			arr.push(arr2[0]);
+			arr2.shift();
+		}
+		while(arr1.length>0&&arr2.length==0){
+			arr.push(arr1[0]);
+			arr1.shift();
+		}
+		return arr;
+	}
+	//两个有序序列的排序3
+	function twoArraySort3(arr1,arr2){
+		var i=0,j=0;
+		var len1=arr1.length,len2=arr2.length;
+		var arr=[];
+		while(i<=len1||j<=len2){
+			if(arr1[i]!==undefined&&arr2[j]!==undefined){
+				if(arr1[i]<=arr2[j]){
+					arr.push(arr1[i]);
+					i++;
+				}else if(arr1[i]>arr2[j]){
+					arr.push(arr2[j]);
+					j++;
+				}
+		 	}else if(arr1[i]===undefined&&arr2[j]!==undefined){
+		 		arr.push(arr2[j]);
+		 		j++;
+		 	}else if(arr2[j]===undefined&&arr1[i]!==undefined){
+		 		arr.push(arr1[i]);
+		 		i++;
+		 	}else{
+		 		break;
+		 	}
+		}	
+		return arr;
+	}
+	
+	//removeElement
+	var removeElement = function(nums, val) {
+       	for(var i=0;i<nums.length;i++){
+    		if(nums[i]===val){
+    			for(var j=i,len=nums.length;j<len-1;j++){
+    				nums[j]=nums[j+1];
+    				nums.pop();
+    			}
+    			i--;
+    		}
+    	}
+    	return nums;
+	};
+	console.log(removeElement([1,2,2,3,2,7,8,9],2));
+	//findMedianSortedArrays
+	var findMedianSortedArrays = function(nums1, nums2) {
+    	var arr=[];
+    	var i=0,j=0;
+    	var len1=nums1.length;
+    	var len2=nums2.length;
+    	while(i<len1||j<len2){
+    		if(i<len1&&j<len2){
+	    		if(nums1[i]<nums2[j]){
+					arr.push(nums1[i]);
+					i++;
+	    		}else if(nums1[i]>=nums2[j]){
+					arr.push(nums2[j]);
+					j++;
+	    		}
+    		}
+    		else if(i===len1&&j<len2){
+    			while(j<len2){
+    				arr.push(nums2[j]);
+    				j++;
+    			}
+    		}else if(i<len1&&j===len2){
+    			while(i<len1){
+    				arr.push(nums1[i]);
+    				i++;
+    			}
+    		}
+    	}
+    	var mid=(arr.length-1)/2;
+    	if(Math.floor(mid)===mid){
+    		return arr[mid];
+    	}else{
+    		return (arr[Math.floor(mid)]+arr[Math.ceil(mid)])/2;
+    	}
+	};
+	//去重复
+	var removeDuplicates = function(nums) {
+		var nums=0;
+   		for(var i=0,len=nums.length;i<len-1;i++){
+   			if(nums[i]!==nums[i+1]){
+   				No++;
+   				nums[No]=nums[i+1];	   			
+   			}
+   		}
+   		nums.length=No+1;
+		return nums;
+	};
+    //去重复允许两个
+    var removeDuplicates2 = function(nums) {
+    	var No=0;
+    	for(var i=0,len=nums.length;i<len-1;i++){
+    		if((nums[i]!==nums[i+1])||(nums[i]===nums[i+1]&&nums[i+1]!==nums[i+2])){
+    			No++;
+    			nums[No]=nums[i+1];
+    		}
+    	}
+    	nums.length=No+1;
+    	return nums;
+	};
+	console.log(removeDuplicates2([1,1]));
+	//合并
+	var merge = function(nums1, m, nums2, n) {
+	    var i=m-1,j=n-1,k=m+n-1;
+	    while(i>=0||j>=0){
+	    		if(j===-1||nums1[i]>nums2[j]){
+	    			nums1[k]=nums1[i];
+	    			i--;
+	    			k--;
+	    		}else if(i===-1||nums1[i]<=nums2[j]){
+	    			nums1[k]=nums2[j];
+	    			j--;
+	    			k--;
+	    		}
+	    }
+	};
+	//最大乘积的子阵列
+	var maxProduct2 = function(nums) {
+    	var product;
+    	if(nums.length<2){
+    		return nums[0];
+    	}
+    	for(var i=0,len=nums.length;i<len;i++){
+    		var No=nums[i];
+    		var j=i;
+    		if(No>product||product===undefined){
+    			product=No;
+    		}
+			while(nums[j]>=nums[j+1]&&j<len-1){
+				No*=nums[j+1];
+				if(No>product||product===undefined){
+	    			product=No;
+	    		}
+	    		j++;
+			}
+			while(nums[j]<nums[j+1]&&j<len-1){
+				No*=nums[j+1];
+				if(No>product||product===undefined){
+	    			product=No;
+	    		}
+	    		j++;
+			}
+    	}
+    	return product;
+	};
+	//最大乘积的子序列
+	var maxProduct = function(nums) {
+    	var result=nums[0],max=nums[0],min=nums[0];
+    	for(var i=1,len=nums.length;i<len;i++){
+    		var tmp=max;
+    		max=Math.max(Math.max(max*nums[i],min*nums[i]),nums[i]);
+    		min=Math.min(Math.min(tmp*nums[i],min*nums[i]),nums[i]);
+    		if(max>result){
+        	    result=max;
+        	}
+
+    	}
+    	return result;
+	};
+	//
+	var minSubArrayLen = function(s, nums) {
+    	var num;
+    	for(var i=0,len=nums.length;i<len;i++){
+    		var sum=0;
+    		for(var j=i;j<len;j++){
+				sum+=nums[j];
+				if(sum>=s){
+					return j-i+1;
+				}
+    		}
+    	}
+	};
 	</script>
 </body>
 </html>
